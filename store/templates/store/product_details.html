@@ -1,0 +1,77 @@
+{% extends 'store/base.html' %} {% block content %} {% load tshirt_tags %}
+<div class="container mt-3">
+  <div class="row">
+    <div class="col cyan darken-3 shadow border p-3 m-2">
+      <div class="">
+        <div class="w-50 text-center mx-auto">
+          <img src="{{tshirt.image.url}}" class="img-fluid" alt="" />
+        </div>
+      </div>
+    </div>
+
+    <div class="col cyan darken-3 shadow border p-3 m-2">
+      <div>
+        <div><h1>{{tshirt.name}}</h1></div>
+        <hr />
+        <p>
+          {{tshirt.description}} Lorem ipsum, dolor sit amet consectetur
+          adipisicing elit. In ipsum laudantium totam fugit eaque ullam porro
+          sequi adipisci, fuga repudiandae quidem soluta sed nulla magnam,
+          numquam, pariatur natus odit. Quo?
+        </p>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h5 for=""><b>Select size</b></h5>
+          <hr />
+          <div class="row">
+            {% for size in tshirt.sizevariant_set.all %}
+
+            <div class="col-4 mt-2">
+              <a
+                href="/product/{{tshirt.slug}}?size={{size.size}}"
+                style="font-weight: bold"
+                class="btn px-4 border-dark shadow-lg rounded btn-block btn-{% get_active_size_btn active_size size %}"
+              >
+                {{size.size}}
+              </a>
+            </div>
+
+            {% endfor %}
+          </div>
+          <br />
+
+          <div
+            style="font-size: 25px"
+            class="badge shadow-lg bg-warning text-dark"
+          >
+            save {{tshirt.discount}}%
+          </div>
+        </div>
+        <div class="col rounded mt-4">
+          <div class="p-2">
+            <div class="p-3">
+              <span style="font-size: 25px"><b>{{sell_price|rupee}}</b></span>
+              <span class="text-muted"><del>{{price|rupee}}</del></span>
+            </div>
+
+            <a
+              href="/addtocart/{{tshirt.slug}}/{{active_size.size}}?return_url={{request.get_full_path}}"
+              style="font-weight: bold"
+              class="btn shadow-sm btn-outline-dark form-control"
+              >Add To Cart</a
+            >
+            <a
+              href=""
+              style="font-weight: bold"
+              class="mt-2 shadow-lg btn btn-outline-dark form-control"
+              >Buy Now</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

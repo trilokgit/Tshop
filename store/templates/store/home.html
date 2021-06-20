@@ -1,0 +1,169 @@
+{% extends 'store/base.html' %} {% block content %} {% load tshirt_tags %}
+
+{% load static %}
+
+<div class="container-fluid mt-3">
+  <div class="row m-1">
+    <div class="col-2 border">
+   <div class="row">
+    <div class="col">
+    <h3>Filters</h3>
+    </div>
+   <div class="col">
+    <span><a href="/" class="float-end mt-4 badge p-2 btn bg-warning text-dark">Clear All</a></span>
+   </div>
+   </div>
+      <form id="filterForm" class="mt-2" action="/">
+        <div>
+          <div class="form-group mt-2">
+            <label for="idealfor">Ideal For</label>
+            <select 
+              onChange="submitForm()"
+              class="form-select border-dark form-control-sm mt-2"
+              id="idealfors"
+              name="idealfor"
+              
+            >
+              <option value="">Select Idealfor</option>
+              {% for brand in idealfors %}
+
+              <option {% if request.GET.idealfor == brand.slug %}selected{% endif %} value="{{brand.slug}}">{{brand.title}}</option>
+ 
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group mt-2">
+            <label for="brand">Brand</label>
+            <select
+              class="form-select border-dark form-control-sm mt-2"
+              id="brands"
+              name="brand"
+              onChange="submitForm()"
+            >
+              <option value="">Select Brand</option>
+              {% for brand in brands %}
+
+              <option {% if request.GET.brand == brand.slug %}selected{% endif %} value="{{brand.slug}}">{{brand.title}}</option>
+
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group mt-2">
+            <label for="nacktype">Nack Type</label>
+            <select
+              class="form-select border-dark form-control-sm mt-2"
+              id="nacktypes"
+              name="nacktype"
+              onChange="submitForm()"
+            >
+              <option value="">Select Nack</option>
+              {% for item in nacktypes %}
+
+              <option {% if request.GET.nacktype == item.slug %}selected{% endif %} value="{{item.slug}}">{{item.title}}</option>
+
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group mt-2">
+            <label for="color">Color Type</label>
+            <select
+              class="form-select border-dark form-control-sm mt-2"
+              id="colors"
+              name="color"
+              onChange="submitForm()"
+            >
+              <option value="">Select Color</option>
+              {% for item in colors %}
+
+              <option {% if request.GET.color == item.slug %}selected{% endif %} value="{{item.slug}}">{{item.title}}</option>
+
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group mt-2">
+            <label for="sleeve">Sleeve Type</label>
+            <select
+              class="form-select border-dark form-control-sm mt-2"
+              id="sleeves"
+              name="sleeve"
+              onChange="submitForm()"
+            >
+              <option value="">Select Sleeve</option>
+              {% for item in sleeves %}
+
+              <option {% if request.GET.sleeve == item.slug %}selected{% endif %} value="{{item.slug}}">{{item.title}}</option>
+
+              {% endfor %}
+            </select>
+          </div>
+
+
+        </div>
+      </form>
+    </div>
+    <div class="col">
+      <div class="row">
+        {% for shirt in page_object %}
+        <div class="col-4 mt-2 mx-auto">
+          <div class="card h-100" style="width: 18rem">
+            <img src="{{shirt.image.url}}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title">{{shirt.description}}</h5>
+              <span style="font-size: 25px"
+                ><b>{% sale_price shirt as result %} {{result|rupee}}</b></span
+              >
+              <span class="text-muted"
+                ><del
+                  >{% min_price shirt as result %} {{result|rupee}}</del
+                ></span
+              >
+              <span
+                class="badge bg-warning mt-2 p-1 float-end"
+                style="color: black"
+                ><b>{{shirt.discount}}% off</b></span
+              >
+            </div>
+
+            <div class="card-footer text-center m-0 p-0">
+              <a href="/product/{{shirt.slug}}" class="btn btn-light btn-block"
+                >See More</a
+              >
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+
+        <div class="mt-3 container">
+         <nav class="" style="margin-left:350px;" aria-label="Page navigation example">
+  <ul class="pagination">
+
+  {% if page_object.has_previous %}
+            <li class="page-item border border-dark"><a class="page-link" href="?{{pageurl}}1">&laquo; first</a></li>
+           
+            <li class="page-item border border-dark"> <a class="page-link" href="?{{pageurl}}{{ page_object.previous_page_number }}">previous</a></li>
+        {% endif %}
+
+        <li class="page-item border border-dark">
+            <a href="" class="page-link">Page {{ page_object.number }} of {{ page_object.paginator.num_pages }}.</a>
+        </li>
+
+        {% if page_object.has_next %}
+            
+<li class="page-item border border-dark"><a class="page-link" href="?{{pageurl}}{{ page_object.next_page_number }}">next</a></li>
+            
+<li class="page-item border border-dark"><a class="page-link" href="?{{pageurl}}{{ page_object.paginator.num_pages }}">last &raquo;</a></li>
+        {% endif %}
+
+    
+  </ul>
+</nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src='{% static "store/js/home.js" %}'></script>
+
+{% endblock content %}

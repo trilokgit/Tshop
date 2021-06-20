@@ -1,0 +1,40 @@
+{% extends 'store/base.html' %} {% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container m-0 p-3 shadow-lg bg-white rounded col-lg-3 mt-5 mx-auto">
+    <div class="container text-center">
+        <img height="100px" src="https://images.indianexpress.com/2015/12/amazon-logo-7591.jpg" alt="">
+    </div>
+    <h2>Login</h2>
+    <hr>
+    
+    <form action="/login" method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        <div class="form-group mt-3">
+            <input type="submit" class="form-control btn btn-primary" value="Login">
+
+        </div>
+
+
+
+    </form>
+    <hr>
+
+    <footer class="page-footer font-small text-dark border-bottom rounded">
+        <div class="footer-copyright text-center  py-3">© 2021 Copyright:
+            <b><a class="text-dark" href="/">www.Eshop.com</a></b>
+        </div>
+
+
+    </footer>
+
+
+
+
+
+
+
+</div>
+
+{% endblock content %}

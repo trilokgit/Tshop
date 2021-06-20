@@ -1,0 +1,65 @@
+{% extends 'store/base.html' %} {% load crispy_forms_tags %}
+ {% load tshirt_tags%}
+ {% block content %}
+
+<div class="container">
+  <div class="p-2">
+    <div class="display-5"><b>Checkout page</b></div>
+    <hr />
+    <div class="row">
+      <div class="col-lg-5 shadow-lg rounded p-5">
+        <form action="/checkout" method="post">
+          {% csrf_token %} {{form|crispy}}
+
+          <div class="form-group">
+            <input
+              type="submit"
+              style="font-weight: bold"
+              value="Checkout"
+              class="btn mt-3 btn-outline-dark"
+            />
+          </div>
+        </form>
+      </div>
+
+      <div class="col mx-3 shadow-lg">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tsirt-Name</th>
+              <th>Tshirt-Size</th>
+              <th>Payable Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in cart %}
+
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{c.size.tshirt.description}}</td>
+              <td>{{c.size.size}}</td>
+              <td>
+                {% clc_sale_price c.size.price c.size.tshirt.discount as result %} {{result|rupee}}
+              </td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div>
+          <div class="mb-4">
+            <h4 class="text-dark">
+              <span class="border-bottom border-dark"
+                >Total Amount {{cart|cal_total_price|rupee}}</span
+              >
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

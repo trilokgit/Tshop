@@ -1,0 +1,73 @@
+{% extends 'store/base.html' %} {% block content %}
+
+{% load tshirt_tags %}
+
+
+<div class="container mt-4 shadow">
+<a href="/checkout" class="btn btn-warning rounded  btn-lg mx-3"><b>PLACE ORDER</b></a> 
+<h5 class="text-success mt-0 border-bottom border-dark float-end">You will save {% total_save cart as cost%} {{cost|rupee}} on this order</h5>
+
+  <div class="mt-5">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Image</th>
+          <th>Tshirt</th>
+          <th>Size</th>
+          <th>price</th>
+          <th>Discount</th>
+          <th>Sale Price</th>
+          <th>Qty</th>
+          <th>Total Price</th>
+          <th>You Save</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for c in cart %}
+
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td><img class="img rounded-circle" height="100px" width="100px" src="{{c.tshirt.image.url}}" alt=""></td>
+          <td>{{c.tshirt.description}}</td>
+          <td>{{c.size.size}}</td>
+          <td>{{c.size.price|rupee}}</td>
+          <td>{{c.tshirt.discount}}%</td>
+          <td>{% clc_sale_price c.size.price c.tshirt.discount as result  %} {{result|rupee}} </td>
+          <td>{{c.quantity}}</td>
+          <td>{% multiply c.quantity result as sale_price %} {{sale_price|rupee}}</td>
+          <td>{% save c.size.price result c.quantity as price %} {{price|rupee}}</td>
+        </tr>
+
+        {% endfor %}
+
+        <tfoot class="border-bottom border-dark bg-dark text-white">
+        <tr>
+        <th colspan=5></th>
+        <th colspan=4>Total Amount</th>
+        <th>{{cart | cal_total_price}}</th>
+        </tr>
+        
+        </tfoot>
+      </tbody>
+    </table>
+    
+  </div>
+  
+  <div>
+  <a href="/checkout" class="btn btn-warning rounded float-end btn-lg mx-3"><b>PLACE ORDER</b></a> 
+    </div>
+  <div>
+    <h5 class="text-success mt-5 border-bottom border-dark">You will save {% total_save cart as cost%} {{cost|rupee}} on this order</h5>
+    
+    </div>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock content %}
